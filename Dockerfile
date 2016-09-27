@@ -1,14 +1,14 @@
-FROM ubuntu:14.04
+FROM debian:7
 
 MAINTAINER Chet Printhong
 
 RUN dpkg --add-architecture i386
-RUN apt-get update && apt-get install libstdc++5:i386 curl -y
+RUN apt-get update && apt-get install libstdc++5:i386 wget -y
 
 RUN mkdir /app
 WORKDIR /app
 
-RUN curl -O http://download.sopcast.com/download/sp-auth.tgz
+RUN wget http://download.sopcast.com/download/sp-auth.tgz && apt-get remove wget -y
 RUN tar -xf sp-auth.tgz
 
 ADD docker-entrypoint.sh /
