@@ -1,14 +1,15 @@
-FROM debian:7
+FROM debian:wheezy-slim
 
 MAINTAINER Chet Printhong
 
-RUN dpkg --add-architecture i386
-RUN apt-get update && apt-get install libstdc++5:i386 wget -y
+RUN dpkg --add-architecture i386 \
+    && apt-get update && apt-get install libstdc++5:i386 wget -y \
+    && mkdir /app \
+    && wget http://download.sopcast.com/download/sp-auth.tgz -P /app \
+    && apt-get purge wget -y \
+    && apt-get autoremove -y
 
-RUN mkdir /app
 WORKDIR /app
-
-RUN wget http://download.sopcast.com/download/sp-auth.tgz && apt-get remove wget -y
 RUN tar -xf sp-auth.tgz
 
 ADD docker-entrypoint.sh /
